@@ -1,0 +1,23 @@
+<!--
+  active-response-snippet.xml
+
+  Add this INSIDE your Wazuh Manager's /var/ossec/etc/ossec.conf,
+  inside the <ossec_config> block — alongside (not replacing) any
+  existing <command>/<active-response> blocks you already have
+  (e.g. the yara_scan stage that triggers the scan itself).
+
+  This block is Stage 2 only: it auto-deletes a file once YARA has
+  already confirmed malware and rule 108001 has fired.
+-->
+
+<command>
+  <name>yara_remove</name>
+  <executable>remove-malware.sh</executable>
+  <timeout_allowed>no</timeout_allowed>
+</command>
+
+<active-response>
+  <command>yara_remove</command>
+  <location>local</location>
+  <rules_id>108001</rules_id>
+</active-response>
